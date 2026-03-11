@@ -1209,11 +1209,7 @@
         <div class="ai-model-tag">
           Modelo:
           <select id="aiModel" onchange="onApiKeyChange()">
-            <option value="google/gemini-flash-1.5">Gemini Flash 1.5 (rápido)</option>
-            <option value="google/gemini-pro-1.5">Gemini Pro 1.5</option>
-            <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (gratis)</option>
-            <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (gratis)</option>
-            <option value="openai/gpt-4o-mini">GPT-4o mini</option>
+            <option value="openai/gpt-oss-20b:nitro">OpenAI</option>
           </select>
         </div>
         <div class="ai-status idle" id="aiStatus">
@@ -1515,7 +1511,7 @@
     document.getElementById('aiStatusText').textContent = msg || 'Error en el análisis IA';
   }
 
-  // Extract plain text from HTML for sending to AI (max ~8000 chars to save tokens)
+  // Extract plain text from HTML for sending to AI (max 168000 chars to save tokens)
   function htmlToPlainText(html) {
     const d = document.createElement('div');
     d.innerHTML = html;
@@ -1523,7 +1519,7 @@
     d.querySelectorAll('p, h1, h2, h3, li, br').forEach(el => {
       el.insertAdjacentText('beforebegin', '\n');
     });
-    return d.textContent.replace(/\n{3,}/g, '\n\n').trim().substring(0, 8000);
+    return d.textContent.replace(/\n{3,}/g, '\n\n').trim().substring(0, 16000);
   }
 
   async function analyzeWithAI(rawHtml) {
@@ -1560,7 +1556,7 @@ ${plainText}`;
       },
       body: JSON.stringify({
         model: model,
-        max_tokens: 1200,
+        max_tokens: 16000,
         temperature: 0.2,
         messages: [{ role: 'user', content: prompt }]
       })
